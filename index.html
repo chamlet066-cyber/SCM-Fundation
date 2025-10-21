@@ -15,6 +15,54 @@
     <title>SCM_HOME</title>
 </head>
 <body style="background-color: rgb(29, 29, 29);">
+
+    <h1>Licznik odwiedzin strony</h1>
+    <div id="counter">Liczba unikalnych odwiedzin: <span id="visitCount">0</span></div>
+
+    <script>
+        // Funkcja do pobierania adresu IP użytkownika
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Błąd podczas pobierania IP:', error);
+                return null;
+            }
+        }
+
+        // Funkcja do zarządzania licznikiem odwiedzin
+        async function updateVisitCounter() {
+            const userIP = await getUserIP();
+            if (!userIP) {
+                console.error('Nie udało się pobrać adresu IP.');
+                return;
+            }
+
+            // Pobierz dane z localStorage
+            let visitors = JSON.parse(localStorage.getItem('uniqueVisitors')) || {};
+            let visitCount = Object.keys(visitors).length;
+
+            // Sprawdź, czy IP już istnieje
+            if (!visitors[userIP]) {
+                visitors[userIP] = true;
+                visitCount++;
+                localStorage.setItem('uniqueVisitors', JSON.stringify(visitors));
+            }
+
+            // Aktualizuj licznik na stronie
+            document.getElementById('visitCount').textContent = visitCount;
+        }
+
+        // Uruchom funkcję po załadowaniu strony
+        window.onload = updateVisitCounter;
+    </script>
+
+
+
+
+    
     <header style="background-color: rgb(39, 39, 39); color: rgba(231, 0, 0, 0.897);"><h1>SCM Fundation</h1> Wszelkie Prawa Zastrzeżone</header>
      <nav>
         <a href="elb.html">Typy</a>
@@ -38,5 +86,6 @@
 </body>
 
 </html>
+
 
 
