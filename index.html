@@ -16,48 +16,38 @@
 </head>
 <body style="background-color: rgb(29, 29, 29);">
 
-    <h1>Licznik odwiedzin strony</h1>
-    <div id="counter">Liczba unikalnych odwiedzin: <span id="visitCount">0</span></div>
+<?php
+// Ścieżki do plików
+$licznik_file = "licznik.txt";
+$ips_file = "ips.txt";
 
-    <script>
-        // Funkcja do pobierania adresu IP użytkownika
-        async function getUserIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                console.error('Błąd podczas pobierania IP:', error);
-                return null;
-            }
-        }
+// Upewnij się, że pliki istnieją
+if (!file_exists($licznik_file)) {
+    file_put_contents($licznik_file, "0");
+}
+if (!file_exists($ips_file)) {
+    file_put_contents($ips_file, "");
+}
 
-        // Funkcja do zarządzania licznikiem odwiedzin
-        async function updateVisitCounter() {
-            const userIP = await getUserIP();
-            if (!userIP) {
-                console.error('Nie udało się pobrać adresu IP.');
-                return;
-            }
+// Wczytaj dane
+$licznik = (int)trim(file_get_contents($licznik_file));
+$ip_list = file($ips_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-            // Pobierz dane z localStorage
-            let visitors = JSON.parse(localStorage.getItem('uniqueVisitors')) || {};
-            let visitCount = Object.keys(visitors).length;
+// Pobierz adres IP użytkownika
+$ip = $_SERVER['REMOTE_ADDR'];
 
-            // Sprawdź, czy IP już istnieje
-            if (!visitors[userIP]) {
-                visitors[userIP] = true;
-                visitCount++;
-                localStorage.setItem('uniqueVisitors', JSON.stringify(visitors));
-            }
+// Jeśli nowy IP — zwiększ licznik i zapisz
+if (!in_array($ip, $ip_list)) {
+    $licznik++;
+    file_put_contents($licznik_file, $licznik, LOCK_EX);
+    file_put_contents($ips_file, $ip . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
 
-            // Aktualizuj licznik na stronie
-            document.getElementById('visitCount').textContent = visitCount;
-        }
+// Wyświetl wynik
+echo "<div class='licznik'>Odwiedzający: <strong>" . htmlspecialchars($licznik) . "</strong></div>";
+?>
 
-        // Uruchom funkcję po załadowaniu strony
-        window.onload = updateVisitCounter;
-    </script>
+    
 
 
 
@@ -86,6 +76,7 @@
 </body>
 
 </html>
+
 
 
 
