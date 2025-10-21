@@ -1,0 +1,82 @@
+main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+body{
+    background-color: rgb(61, 63, 68);
+    
+}
+header{
+    background-color: plum;
+    min-height: 100px;
+
+}
+nav{
+    background-color: rgb(41, 41, 41);
+    display: flex;
+    min-height: 20px;
+    padding: 5px;
+    
+}
+aside > a{
+width: 40px;
+}
+aside{
+    display: flex;
+    background-color: rgba(82, 8, 8, 0.158);
+    flex-direction: column;
+    height: auto;
+    padding: 5px;
+}
+
+a{
+    background-color: rgba(214, 214, 214, 0.356);
+    padding: 10px;
+    text-decoration: none;
+    width: 50px;
+    color: rgb(0, 0, 0);
+    margin: 5px;
+}
+section{
+    flex: 66%;
+    background-color: rgb(53, 53, 53);
+}
+article{
+    padding: 5px;
+    color: b;
+}
+footer{
+    padding: 5px ;
+    background-color: rgba(160, 79, 79, 0.336);
+}
+@media screen and (max-width: 700px) {
+    main,nav{
+        flex-direction: column;
+    }
+    aside > a, nav > a{
+        width: auto;
+        margin: 5px;
+    }
+}
+
+li{
+    color: rgba(255, 255, 255, 0.596);
+}
+
+dl{
+    color: rgba(255, 255, 255, 0.596);
+}
+
+dt{
+    color: rgba(255, 255, 255, 0.596);
+}
+
+dd{
+    color: rgba(255, 255, 255, 0.596);
+}
+
+pre{
+    color: aliceblue;
+}
