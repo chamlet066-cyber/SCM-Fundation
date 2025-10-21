@@ -16,36 +16,8 @@
 </head>
 <body style="background-color: rgb(29, 29, 29);">
 
-<?php
-// Ścieżki do plików
-$licznik_file = "licznik.txt";
-$ips_file = "ips.txt";
-
-// Upewnij się, że pliki istnieją
-if (!file_exists($licznik_file)) {
-    file_put_contents($licznik_file, "0");
-}
-if (!file_exists($ips_file)) {
-    file_put_contents($ips_file, "");
-}
-
-// Wczytaj dane
-$licznik = (int)trim(file_get_contents($licznik_file));
-$ip_list = file($ips_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-// Pobierz adres IP użytkownika
-$ip = $_SERVER['REMOTE_ADDR'];
-
-// Jeśli nowy IP — zwiększ licznik i zapisz
-if (!in_array($ip, $ip_list)) {
-    $licznik++;
-    file_put_contents($licznik_file, $licznik, LOCK_EX);
-    file_put_contents($ips_file, $ip . PHP_EOL, FILE_APPEND | LOCK_EX);
-}
-
-// Wyświetl wynik
-echo "<div class='licznik'>Odwiedzający: <strong>" . htmlspecialchars($licznik) . "</strong></div>";
-?>
+    <script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-d426c510-88b4-4f9e-ac87-639577d9044b" data-elfsight-app-lazy></div>
 
     
 
@@ -76,6 +48,7 @@ echo "<div class='licznik'>Odwiedzający: <strong>" . htmlspecialchars($licznik)
 </body>
 
 </html>
+
 
 
 
