@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pobierz zdjęcie do folderu Pobrane</title>
+</head>
+<body>
+    <h2>Kliknij, by pobrać zdjęcie do folderu <strong>Pobrane</strong></h2>
+    
+    <button onclick="pobierzZdjecie()">Pobierz zdjęcie</button>
+
+    <script>
+        async function pobierzZdjecie() {
+            // ZMIEŃ TEN LINK NA SWOJE ZDJĘCIE
+            const url = 'https://picsum.photos/800/600'; // przykładowe zdjęcie (działa)
+            // const url = 'https://twoja-strona.com/zdjecia/moje.jpg'; // <-- twoje
+
+            const nazwaPliku = 'moje_zdjecie.jpg'; // nazwa po pobraniu
+
+            try {
+                // Pobieramy zdjęcie jako blob
+                const odpowiedz = await fetch(url);
+                
+                if (!odpowiedz.ok) {
+                    alert('Błąd: nie można pobrać zdjęcia.');
+                    return;
+                }
+
+                const blob = await odpowiedz.blob();
+
+                // Tworzymy link do blob
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                // Tworzymy niewidoczny <a> z download
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = nazwaPliku;
+
+                // Klikamy i usuwamy
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Zwalniamy pamięć
+                window.URL.revokeObjectURL(blobUrl);
+
+                console.log('Zdjęcie pobrane do folderu Pobrane!');
+            } catch (err) {
+                alert('Wystąpił błąd: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
